@@ -32,7 +32,7 @@ public class NewsListAdapter(var context: Context, var newsList:List<ArticlesIte
 
         Glide.with(context).load(news_item.urlToImage).into(holder.image_view)
 
-        holder.news_item_layout.setOnClickListener { onClickInterface.onNewsItemClick(position) }
+        holder.news_item_layout.setOnClickListener { onClickInterface.onNewsItemClick(news_item.url) }
     }
 
     inner class NewsListViewHolder(view: View) : RecyclerView.ViewHolder(view) {

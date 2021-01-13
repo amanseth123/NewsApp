@@ -1,6 +1,6 @@
 package com.example.newsreaderapp.ui.home;
 
 public interface NewsListClickListener {
-    void onNewsItemClick(int newsItem);
+    void onNewsItemClick(String news_url);
 }
 

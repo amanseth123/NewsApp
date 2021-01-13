@@ -1,9 +1,7 @@
 package com.example.newsreaderapp.ui.home
 
 import android.content.Intent
-import android.nfc.tech.MifareUltralight.PAGE_SIZE
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -15,10 +13,10 @@ import com.example.newsreaderapp.databinding.ActivityMainBinding
 import com.example.newsreaderapp.models.ArticlesItem
 import com.example.newsreaderapp.models.TopHeadlinesResponse
 import com.example.newsreaderapp.network.ApiClient
+import com.example.newsreaderapp.ui.readnews.ReadNewsWebView
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.io.Console
 import java.util.*
 
 
@@ -35,8 +33,10 @@ class MainActivity : AppCompatActivity(),Callback<TopHeadlinesResponse> {
         super.onCreate(savedInstanceState)
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_main)
 
-        on_news_click = NewsListClickListener { news_id ->
-            Toast.makeText(this,"News Item clicked",Toast.LENGTH_SHORT).show()
+        on_news_click = NewsListClickListener { news_url ->
+            var intent = Intent(MainActivity@this, ReadNewsWebView::class.java)
+            intent.putExtra("url",news_url)
+            startActivity(intent)
         }
 
         news_recycler_view = mBinding.recyclerView
@@ -50,16 +50,6 @@ class MainActivity : AppCompatActivity(),Callback<TopHeadlinesResponse> {
         ApiClient.getInstance().getApi()
             .topHeadlines("in")
             .enqueue(this)
-
-//        if(top_headlines.isSuccessful){
-//            news_list_adapter?.newsList?.clear()
-//            news_list_adapter?.newsList?.addAll(top_headlines?.body()?.articles as Collection<ArticlesItem>)
-//            news_list_adapter?.notifyDataSetChanged()
-//        }
-//        else{
-//            Toast.makeText(this,"Faild to get news",Toast.LENGTH_SHORT).show()
-//        }
-
     }
 
     override fun onFailure(call: Call<TopHeadlinesResponse>, t: Throwable) {
